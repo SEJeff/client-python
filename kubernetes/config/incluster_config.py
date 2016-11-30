@@ -52,6 +52,10 @@ class InClusterConfigLoader(object):
                 self._port_env_name not in self._environ):
             raise ConfigException("Service host/port is not set.")
 
+        if (not self._environ[self._host_env_name] or
+                not self._environ[self._port_env_name]):
+            raise ConfigException("Service host/port is set but empty.")
+
         self.host = (
             "https://" + _join_host_port(self._environ[self._host_env_name],
                                          self._environ[self._port_env_name]))
@@ -61,10 +65,16 @@ class InClusterConfigLoader(object):
 
         with open(self._token_filename) as f:
             self.token = f.read()
+            if not self.token:
+                raise ConfigException("Token file exists but empty.")
 
         if not os.path.isfile(self._cert_filename):
             raise ConfigException(
                 "Service certification file does not exists.")
+
+        with open(self._cert_filename) as f:
+            if not f.read():
+                raise ConfigException("Cert file exists but empty.")
 
         self.ssl_ca_cert = self._cert_filename
 
