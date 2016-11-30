@@ -16,8 +16,6 @@ import os
 import tempfile
 import unittest
 
-from kubernetes.client import configuration
-
 from .incluster_config import (_SERVICE_HOST_ENV_NAME, _SERVICE_PORT_ENV_NAME,
                                ConfigException, InClusterConfigLoader)
 

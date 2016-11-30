@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .config_exception import ConfigException
-from .incluster_config import load_incluster_config
-from .kube_config import load_kube_config
+
+class ConfigException(Exception):
+
+    def __init__(self, message, *args, **kwargs):
+        super(Exception, self).__init__(message, *args, **kwargs)
+        self._message = message
+
+    @property
+    def message(self):
+        return self._message
